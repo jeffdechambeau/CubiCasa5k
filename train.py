@@ -243,42 +243,24 @@ import argparse
 def setup_arg_parser():
     parser = argparse.ArgumentParser(description='Hyperparameters for Floorplan Segmentation Model Training')
     
-    parser.add_argument('--arch', nargs='?', type=str, default='hg_furukawa_original',
-                        help='Architecture to use [\'hg_furukawa_original, segnet, etc.\']')
-    parser.add_argument('--optimizer', nargs='?', type=str, default='adam-patience-previous-best',
-                        help='Optimizer to use [\'adam, sgd\']')
-    parser.add_argument('--data-path', nargs='?', type=str, default='data/cubicasa5k/',
-                        help='Path to data directory')
-    parser.add_argument('--n-classes', nargs='?', type=int, default=44,
-                        help='Number of classes for the model')
-    parser.add_argument('--n-epoch', nargs='?', type=int, default=1000,
-                        help='Number of epochs for training')
-    parser.add_argument('--batch-size', nargs='?', type=int, default=26,
-                        help='Batch Size for training')
-    parser.add_argument('--image-size', nargs='?', type=int, default=256,
-                        help='Image size for training')
-    parser.add_argument('--l-rate', nargs='?', type=float, default=1e-3,
-                        help='Learning Rate')
-    parser.add_argument('--l-rate-var', nargs='?', type=float, default=1e-3,
-                        help='Learning Rate for Variance')
-    parser.add_argument('--l-rate-drop', nargs='?', type=float, default=200,
-                        help='Epochs after which learning rate drops')
-    parser.add_argument('--patience', nargs='?', type=int, default=10,
-                        help='Patience for learning rate reduction')
-    parser.add_argument('--weights', nargs='?', type=str, default=None,
-                        help='Path to previously trained model weights file (.pkl)')
-    parser.add_argument('--furukawa-weights', nargs='?', type=str, default=None,
-                        help='Path to previously trained furukawa model weights file (.pkl)')
-    parser.add_argument('--new-hyperparams', action='store_true',
-                        help='Continue training with new hyperparameters')
-    parser.add_argument('--log-path', nargs='?', type=str, default='runs_cubi/',
-                        help='Path to log directory')
-    parser.add_argument('--debug', action='store_true',
-                        help='Run in debug mode with verbose logging')
-    parser.add_argument('--plot-samples', action='store_true',
-                        help='Plot floorplan segmentations to Tensorboard')
-    parser.add_argument('--scale', action='store_true',
-                        help='Rescale to 256x256 as augmentation')
+    parser.add_argument('--arch', nargs='?', type=str, default='hg_furukawa_original', help='Architecture to use [\'hg_furukawa_original, segnet, etc.\']')
+    parser.add_argument('--optimizer', nargs='?', type=str, default='adam-patience-previous-best', help='Optimizer to use [\'adam, sgd\']')
+    parser.add_argument('--data-path', nargs='?', type=str, default='data/cubicasa5k/', help='Path to data directory')
+    parser.add_argument('--n-classes', nargs='?', type=int, default=44, help='Number of classes for the model')
+    parser.add_argument('--n-epoch', nargs='?', type=int, default=1000, help='Number of epochs for training')
+    parser.add_argument('--batch-size', nargs='?', type=int, default=26, help='Batch Size for training')
+    parser.add_argument('--image-size', nargs='?', type=int, default=256, help='Image size for training')
+    parser.add_argument('--l-rate', nargs='?', type=float, default=1e-3, help='Learning Rate')
+    parser.add_argument('--l-rate-var', nargs='?', type=float, default=1e-3, help='Learning Rate for Variance')
+    parser.add_argument('--l-rate-drop', nargs='?', type=float, default=200, help='Epochs after which learning rate drops')
+    parser.add_argument('--patience', nargs='?', type=int, default=10, help='Patience for learning rate reduction')
+    parser.add_argument('--weights', nargs='?', type=str, default=None, help='Path to previously trained model weights file (.pkl)')
+    parser.add_argument('--furukawa-weights', nargs='?', type=str, default=None, help='Path to previously trained furukawa model weights file (.pkl)')
+    parser.add_argument('--new-hyperparams', action='store_true', help='Continue training with new hyperparameters')
+    parser.add_argument('--log-path', nargs='?', type=str, default='runs_cubi/', help='Path to log directory')
+    parser.add_argument('--debug', action='store_true', help='Run in debug mode with verbose logging')
+    parser.add_argument('--plot-samples', action='store_true', help='Plot floorplan segmentations to Tensorboard')
+    parser.add_argument('--scale', action='store_true', help='Rescale to 256x256 as augmentation')
     
     return parser
 
