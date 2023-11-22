@@ -904,8 +904,8 @@ def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
             widths = np.append(widths, w_pos + w_neg + 1)
 
         # widths = reject_outliers(widths)
-        # if len(widths) == 0:
-            # return None
+        if len(widths) == 0:
+            return None
         wall_width = stats.mode(widths).mode[0]
         if wall_width > y2 - y1:
             wall_width = y2 - y1
@@ -960,8 +960,8 @@ def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
             widths = np.append(widths, w_pos + w_neg + 1)
 
         # widths = reject_outliers(widths)
-        # if len(widths) == 0:
-            # return None
+        if len(widths) == 0:
+            return None
         wall_width = stats.mode(widths).mode[0]
         if wall_width > x2 - x1:
             wall_width = x2 - x1
