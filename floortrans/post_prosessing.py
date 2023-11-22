@@ -859,6 +859,7 @@ def walls_same_corner(wall1, wall2, wall_points):
 
 
 def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
+    print(wall, wall_points, segmentation, seg_class)
     _, max_height, max_width = segmentation.shape
     x1 = wall_points[wall[0]][0]
     x2 = wall_points[wall[1]][0]
@@ -903,9 +904,11 @@ def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
 
             widths = np.append(widths, w_pos + w_neg + 1)
 
-        # widths = reject_outliers(widths)
-        if len(widths) == 0:
+        widths = reject_outliers(widths)
+        print(widths)
+        if not len(widths):
             return None
+        
         wall_width = stats.mode(widths).mode
         if wall_width > y2 - y1:
             wall_width = y2 - y1
