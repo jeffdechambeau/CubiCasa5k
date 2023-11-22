@@ -182,7 +182,11 @@ def validate(model, criterion, valloader, writer, logger, epoch, args):
 
     for i_val, samples_val in tqdm(enumerate(valloader), total=len(valloader), ncols=80, leave=False):
         with torch.no_grad():
-            # ... [previous code] ...
+            images_val = samples_val['image'].cuda(non_blocking=True)
+            labels_val = samples_val['label'].cuda(non_blocking=True)
+            outputs = model(images_val)
+            labels_val = F.interpolate(labels_val, size=outputs.shape[2:], mode='bilinear', align_corners=False)
+            loss = criterion(outputs, labels_val)
             update_validation_metrics(val_losses, val_variances, val_ss, criterion, running_metrics_room_val, running_metrics_icon_val, outputs, labels_val)
 
     val_loss = val_losses.mean()
