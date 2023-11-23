@@ -859,7 +859,7 @@ def walls_same_corner(wall1, wall2, wall_points):
 
 
 def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
-    print(wall, wall_points, segmentation, seg_class)
+
     _, max_height, max_width = segmentation.shape
     x1 = wall_points[wall[0]][0]
     x2 = wall_points[wall[1]][0]
