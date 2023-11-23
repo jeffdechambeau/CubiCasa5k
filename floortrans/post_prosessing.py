@@ -905,7 +905,6 @@ def extract_wall_polygon(wall, wall_points, segmentation, seg_class):
             widths = np.append(widths, w_pos + w_neg + 1)
 
         widths = reject_outliers(widths)
-        print(widths)
         if not len(widths):
             return None
         
