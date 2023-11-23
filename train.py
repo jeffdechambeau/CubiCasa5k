@@ -19,8 +19,8 @@ from floortrans.metrics import get_px_acc, runningScore
 from floortrans.losses import UncertaintyLoss
 from floortrans.models import get_model
 from floortrans.loaders import FloorplanSVG
-from floortrans.loaders.augmentations import (RandomCropToSizeTorch, ResizePaddedTorch, Compose, DictToTensor,
-                                              ColorJitterTorch, RandomRotations)
+from floortrans.loaders.augmentations import (
+    RandomCropToSizeTorch, ResizePaddedTorch, Compose, DictToTensor,                      ColorJitterTorch, RandomRotations)
 
 import matplotlib.pyplot as plt
 import matplotlib
@@ -34,8 +34,8 @@ def setup_augmentation(args):
                      ColorJitterTorch()]
 
     if args.scale:
-        augmentations.insert(0, RandomChoice([ResizePaddedTorch((0, 0), data_format='dict',
-                                                                size=(args.image_size, args.image_size))]))
+        augmentations.insert(0, RandomChoice([ResizePaddedTorch(
+            (0, 0), data_format='dict',                                        size=(args.image_size, args.image_size))]))
     return Compose(augmentations)
 
 
@@ -46,8 +46,8 @@ def setup_dataloader(args, aug):
                            format='lmdb', augmentations=DictToTensor())
 
     num_workers = 0 if args.debug else 8
-    trainloader = data.DataLoader(train_set, batch_size=args.batch_size, num_workers=num_workers,
-                                  shuffle=True, pin_memory=True)
+    trainloader = data.DataLoader(train_set, batch_size=args.batch_size,
+                                  num_workers=num_workers,          shuffle=True, pin_memory=True)
     valloader = data.DataLoader(
         val_set, batch_size=1, num_workers=num_workers, pin_memory=True)
     return trainloader, valloader
@@ -238,50 +238,50 @@ def log_data_loading(logger):
 
 
 def parse_arguments():
+
+    arg_specs = [
+        ('--arch', {'nargs': '?', 'type': str,
+         'default': 'hg_furukawa_original', 'help': 'Architecture to use.'}),
+        ('--optimizer', {'nargs': '?', 'type': str, 'default': 'adam-patience-previous-best',
+         'help': "Optimizer to use ['adam, sgd']."}),
+        ('--data-path', {'nargs': '?', 'type': str,
+         'default': 'data/cubicasa5k/', 'help': 'Path to data directory'}),
+        ('--n-classes', {'nargs': '?', 'type': int,
+         'default': 44, 'help': 'Number of classes.'}),
+        ('--n-epoch', {'nargs': '?', 'type': int,
+         'default': 1000, 'help': 'Number of epochs'}),
+        ('--batch-size', {'nargs': '?', 'type': int,
+         'default': 26, 'help': 'Batch Size'}),
+        ('--image-size', {'nargs': '?', 'type': int,
+         'default': 256, 'help': 'Image size in training'}),
+        ('--l-rate', {'nargs': '?', 'type': float,
+         'default': 1e-3, 'help': 'Learning Rate'}),
+        ('--l-rate-var', {'nargs': '?', 'type': float,
+         'default': 1e-3, 'help': 'Learning Rate for Variance'}),
+        ('--l-rate-drop', {'nargs': '?', 'type': float, 'default': 200,
+         'help': 'Learning rate drop after how many epochs?'}),
+        ('--patience', {'nargs': '?', 'type': int,
+         'default': 10, 'help': 'Learning rate drop patience'}),
+        ('--feature-scale', {'nargs': '?', 'type': int,
+         'default': 1, 'help': 'Divider for # of features to use'}),
+        ('--weights', {'nargs': '?', 'type': str, 'default': None,
+         'help': 'Path to previously trained model weights file .pkl'}),
+        ('--furukawa-weights', {'nargs': '?', 'type': str, 'default': None,
+         'help': 'Path to previously trained furukawa model weights file .pkl'}),
+        ('--new-hyperparams', {'nargs': '?', 'type': bool, 'default': False,
+         'const': True, 'help': 'Continue training with new hyperparameters'}),
+        ('--log-path', {'nargs': '?', 'type': str,
+         'default': 'runs_cubi/', 'help': 'Path to log directory'}),
+        ('--debug', {'nargs': '?', 'type': bool,
+         'default': False, 'const': True, 'help': 'Debug mode'}),
+        ('--plot-samples', {'nargs': '?', 'type': bool, 'default': False,
+         'const': True, 'help': 'Plot floorplan segmentations to Tensorboard.'}),
+        ('--scale', {'nargs': '?', 'type': bool, 'default': False,
+         'const': True, 'help': 'Rescale to 256x256 augmentation.'})
+    ]
     parser = argparse.ArgumentParser(description='Hyperparameters')
-    parser = argparse.ArgumentParser(description='Hyperparameters')
-    parser.add_argument('--arch', nargs='?', type=str, default='hg_furukawa_original',
-                        help='Architecture to use.')
-    parser.add_argument('--optimizer', nargs='?', type=str, default='adam-patience-previous-best',
-                        help='Optimizer to use [\'adam, sgd\']')
-    parser.add_argument('--data-path', nargs='?', type=str, default='data/cubicasa5k/',
-                        help='Path to data directory')
-    parser.add_argument('--n-classes', nargs='?', type=int, default=44,
-                        help='# of the epochs')
-    parser.add_argument('--n-epoch', nargs='?', type=int, default=1000,
-                        help='# of the epochs')
-    parser.add_argument('--batch-size', nargs='?', type=int, default=26,
-                        help='Batch Size')
-    parser.add_argument('--image-size', nargs='?', type=int, default=256,
-                        help='Image size in training')
-    parser.add_argument('--l-rate', nargs='?', type=float, default=1e-3,
-                        help='Learning Rate')
-    parser.add_argument('--l-rate-var', nargs='?', type=float, default=1e-3,
-                        help='Learning Rate for Variance')
-    parser.add_argument('--l-rate-drop', nargs='?', type=float, default=200,
-                        help='Learning rate drop after how many epochs?')
-    parser.add_argument('--patience', nargs='?', type=int, default=10,
-                        help='Learning rate drop patience')
-    parser.add_argument('--feature-scale', nargs='?', type=int, default=1,
-                        help='Divider for # of features to use')
-    parser.add_argument('--weights', nargs='?', type=str, default=None,
-                        help='Path to previously trained model weights file .pkl')
-    parser.add_argument('--furukawa-weights', nargs='?', type=str, default=None,
-                        help='Path to previously trained furukawa model weights file .pkl')
-    parser.add_argument('--new-hyperparams', nargs='?', type=bool,
-                        default=False, const=True,
-                        help='Continue training with new hyperparameters')
-    parser.add_argument('--log-path', nargs='?', type=str, default='runs_cubi/',
-                        help='Path to log directory')
-    parser.add_argument('--debug', nargs='?', type=bool,
-                        default=False, const=True,
-                        help='Continue training with new hyperparameters')
-    parser.add_argument('--plot-samples', nargs='?', type=bool,
-                        default=False, const=True,
-                        help='Plot floorplan segmentations to Tensorboard.')
-    parser.add_argument('--scale', nargs='?', type=bool,
-                        default=False, const=True,
-                        help='Rescale to 256x256 augmentation.')
+    [parser.add_argument(arg, **specs) for arg, specs in arg_specs]
+
     return parser.parse_args()
 
 
