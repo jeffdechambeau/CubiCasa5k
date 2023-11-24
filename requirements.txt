@@ -8,7 +8,7 @@ chardet==3.0.4
 cloudpickle==0.8.0
 cryptography==2.3.1
 cycler==0.10.0
-Cython==0.29.6
+Cython
 dask==1.1.4
 decorator==4.4.0
 defusedxml==0.5.0
